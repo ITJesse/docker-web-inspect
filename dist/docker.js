@@ -42,7 +42,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var docker = void 0;
-if (_config2.default.socketPath) {
+if (_config2.default.socketPath && _config2.default.socketPath != 'null') {
   docker = new _dockerode2.default({ socketPath: _config2.default.socketPath });
 } else if (_config2.default.host && _config2.default.port) {
   docker = new _dockerode2.default({ host: _config2.default.host, port: _config2.default.port });
