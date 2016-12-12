@@ -1,7 +1,7 @@
 export const containerNotFound = (info) => {
   return {
     errorCode: -1,
-    desp: "Container " + info + " cannot be found"
+    desp: "Container " + info + " not found"
   };
 };
 

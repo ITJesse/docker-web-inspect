@@ -3,7 +3,7 @@ import config from './config';
 import * as returnCode from './returnCode';
 
 let docker;
-if(config.socketPath) {
+if(config.socketPath && config.socketPath != 'null') {
   docker = new Docker({ socketPath: config.socketPath });
 }
 else if(config.host && config.port) {
