@@ -51,22 +51,24 @@ Example response:
 * /search_by_id/:id
 
 # Environment
-* DOCKER_SOCKET_PATH
+* `DOCKER_SOCKET_PATH`
 
   The Unix socket file path of Docker, default is `/var/run/docker.sock`.
 
-* DOCKER_HOST
+* `DOCKER_HOST`
 
-  The Docker Remote API host.
+  The Docker Remote API host, default is null. 
+  Notice: When `DOCKER_SOCKET_PATH` is set, DOCKER_HOST will never be used. If you want to use this option, please set `DOCKER_SOCKET_PATH` to null.
   
-* DOCKER_PORT
+* `DOCKER_PORT`
 
-  The Docker Remote API port.
+  The Docker Remote API port, default is null.
+  Notice: This option will only take effect with `DOCKER_HOST`.
   
-* WEB_AUTH_NAME
+* `WEB_AUTH_NAME`
 
   The web authorization username, default is `docker`.
   
-* WEB_AUTH_PASS
+* `WEB_AUTH_PASS`
 
   The web authorization password, default is `docker`.
