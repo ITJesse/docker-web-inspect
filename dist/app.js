@@ -58,7 +58,7 @@ app.use(function () {
             _context.prev = 5;
             _context.t0 = _context['catch'](0);
 
-            if (!(401 == _context.t0.status)) {
+            if (!(_context.t0.status === 401)) {
               _context.next = 13;
               break;
             }

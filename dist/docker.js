@@ -29,6 +29,10 @@ var _dockerode = require('dockerode');
 
 var _dockerode2 = _interopRequireDefault(_dockerode);
 
+var _async = require('async');
+
+var _async2 = _interopRequireDefault(_async);
+
 var _config = require('./config');
 
 var _config2 = _interopRequireDefault(_config);
@@ -42,12 +46,17 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var docker = void 0;
-if (_config2.default.socketPath && _config2.default.socketPath != 'null') {
-  docker = new _dockerode2.default({ socketPath: _config2.default.socketPath });
+if (_config2.default.socketPath && _config2.default.socketPath !== 'null') {
+  docker = new _dockerode2.default({
+    socketPath: _config2.default.socketPath
+  });
 } else if (_config2.default.host && _config2.default.port) {
-  docker = new _dockerode2.default({ host: _config2.default.host, port: _config2.default.port });
+  docker = new _dockerode2.default({
+    host: _config2.default.host,
+    port: _config2.default.port
+  });
 } else {
-  console.log("Cannot found docker socket config.");
+  console.log('Cannot found docker socket config.');
   process.exit();
 }
 
@@ -56,9 +65,8 @@ var getAllContainers = function getAllContainers() {
     docker.listContainers(function (err, containers) {
       if (err) {
         return reject(err);
-      } else {
-        return resolve(containers);
       }
+      return resolve(containers);
     });
   });
 };
@@ -115,7 +123,7 @@ var getContainerByName = function () {
 
             containerName = _step2.value;
 
-            if (!(containerName.substr(1) == name)) {
+            if (!(containerName.substr(1) === name)) {
               _context.next = 28;
               break;
             }
@@ -264,7 +272,7 @@ var getContainerById = function () {
 
             container = _step3.value;
 
-            if (!(container.Id == id)) {
+            if (!(container.Id === id)) {
               _context2.next = 21;
               break;
             }
@@ -327,14 +335,42 @@ var getContainerById = function () {
   };
 }();
 
-var buildContainerStatus = function buildContainerStatus(data) {
-  return {
-    id: data.Id,
-    name: data.Names[0].substr(1),
-    state: data.State,
-    status: data.Status,
-    ports: data.Ports
-  };
+var getEnv = function getEnv(id) {
+  var container = docker.getContainer(id);
+  return new _promise2.default(function (resolve, reject) {
+    container.inspect(function (err, inspect) {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(inspect.Config.Env);
+    });
+  });
+};
+
+var buildContainerStatus = function buildContainerStatus(data, callback) {
+  getEnv(data.Id).then(function (env) {
+    return callback(null, {
+      id: data.Id,
+      name: data.Names[0].substr(1),
+      state: data.State,
+      status: data.Status,
+      ports: data.Ports,
+      env: env
+    });
+  }).catch(function (err) {
+    return callback(err);
+  });
+};
+
+var buildResult = function buildResult(containers) {
+  return new _promise2.default(function (resolve, reject) {
+    _async2.default.map(containers, buildContainerStatus, function (err, result) {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(result);
+    });
+  });
 };
 
 var getByName = exports.getByName = function () {
@@ -431,41 +467,42 @@ var getById = exports.getById = function () {
 
 var getAll = exports.getAll = function () {
   var _ref5 = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee5(ctx) {
-    var containers, result;
+    var result, containers;
     return _regenerator2.default.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            containers = void 0;
+            result = [];
             _context5.prev = 1;
             _context5.next = 4;
             return getAllContainers();
 
           case 4:
             containers = _context5.sent;
-            _context5.next = 11;
-            break;
+            _context5.next = 7;
+            return buildResult(containers);
 
           case 7:
-            _context5.prev = 7;
+            result = _context5.sent;
+            _context5.next = 14;
+            break;
+
+          case 10:
+            _context5.prev = 10;
             _context5.t0 = _context5['catch'](1);
 
             ctx.body = (0, _stringify2.default)(returnCode.serverError());
             throw new Error(_context5.t0);
 
-          case 11:
-            result = containers.map(function (contianer) {
-              return buildContainerStatus(contianer);
-            });
-
+          case 14:
             ctx.body = (0, _stringify2.default)(returnCode.resultOk(result));
 
-          case 13:
+          case 15:
           case 'end':
             return _context5.stop();
         }
       }
-    }, _callee5, undefined, [[1, 7]]);
+    }, _callee5, undefined, [[1, 10]]);
   }));
 
   return function getAll(_x7) {

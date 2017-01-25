@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,14 +6,14 @@ Object.defineProperty(exports, "__esModule", {
 var containerNotFound = exports.containerNotFound = function containerNotFound(info) {
   return {
     errorCode: -1,
-    desp: "Container " + info + " not found"
+    desp: 'Container ' + info + ' not found'
   };
 };
 
 var resultOk = exports.resultOk = function resultOk(info) {
   return {
     errorCode: 0,
-    desp: "ok",
+    desp: 'ok',
     data: info
   };
 };
@@ -21,6 +21,6 @@ var resultOk = exports.resultOk = function resultOk(info) {
 var serverError = exports.serverError = function serverError() {
   return {
     errorCode: -999,
-    desp: "server error"
+    desp: 'server error'
   };
 };
