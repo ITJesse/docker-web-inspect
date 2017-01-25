@@ -1,0 +1,16 @@
+{
+    "extends": [
+        "airbnb"
+    ],
+    "plugins": [
+        "react"
+    ],
+    "parser": "babel-eslint",
+    "rules": {
+      "strict": 0,
+      "no-restricted-syntax": 0,
+      "func-names": 0,
+      "no-param-reassign": 0,
+      "no-console": 0
+    }
+}

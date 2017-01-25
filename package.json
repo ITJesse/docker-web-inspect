@@ -1,6 +1,6 @@
 {
   "name": "docker-web-inspect",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Restful API for docker inspect",
   "main": "dist/app.js",
   "scripts": {
@@ -11,24 +11,30 @@
     "docker-web-inspect": "start-server"
   },
   "author": "itjesse",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ITJesse/docker-web-inspect.git"
   },
-  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/ITJesse/docker-web-inspect/issues"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.1",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-polyfill": "^6.16.0",
     "babel-preset-es2015": "^6.18.0",
-    "babel-preset-stage-0": "^6.16.0"
+    "babel-preset-stage-0": "^6.16.0",
+    "eslint": "^3.14.0",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0"
   },
   "dependencies": {
+    "async": "^2.1.4",
     "babel-runtime": "^6.18.0",
     "dockerode": "^2.3.1",
     "koa": "2.0.0-alpha.7",
